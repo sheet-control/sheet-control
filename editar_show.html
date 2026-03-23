@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Show</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff 0%, #f6fbf7 100%);
+            margin: 0;
+            padding: 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url("/static/sheet_control_logo.png") center center no-repeat;
+            background-size: 420px;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(4px);
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .topbar img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 6px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            color: #14478f;
+        }
+
+        .topbar p {
+            margin: 4px 0 0;
+            color: #64748b;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.94);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .linha-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            min-width: 180px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-brand {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="topbar">
+        <img src="{{ url_for('static', filename='sheet_control_logo.png') }}" alt="Sheet Control">
+        <div>
+            <h1>Editar Show</h1>
+            <p>Sheet Control</p>
+        </div>
+    </div>
+
+    <div class="box">
+        <form method="post" action="/atualizar_show/{{ show[0] }}">
+            <div class="linha-form">
+                <div class="campo">
+                    <label>Artista</label>
+                    <input name="artista" value="{{ show[1] }}" required>
+                </div>
+
+                <div class="campo">
+                    <label>Cidade</label>
+                    <input name="cidade" value="{{ show[2] }}" required>
+                </div>
+
+                <div class="campo">
+                    <label>Data do Show</label>
+                    <input type="date" name="data_show" value="{{ show[3] }}" required>
+                </div>
+
+                <div class="campo">
+                    <label>Valor Total</label>
+                    <input name="valor_total" value="{{ format_brl(show[4]) }}" required>
+                </div>
+            </div>
+
+            <div class="linha-form">
+                <div class="campo">
+                    <label>ISS (%)</label>
+                    <input name="iss_pct" value="{{ show[5] }}">
+                </div>
+
+                <div class="campo">
+                    <label>IR (%)</label>
+                    <input name="ir_pct" value="{{ show[6] }}">
+                </div>
+
+                <div class="campo">
+                    <label>Qtd Parcelas</label>
+                    <input type="number" name="num_parcelas" value="{{ show[7] }}" min="1" required>
+                </div>
+
+                <div class="campo">
+                    <label>1º Vencimento</label>
+                    <input type="date" name="primeiro_vencimento" value="{{ show[8] }}" required>
+                </div>
+
+                <div class="campo">
+                    <label>Tributo no</label>
+                    <select name="tributo_momento">
+                        <option value="FINAL" {% if show[9] == "FINAL" %}selected{% endif %}>Final</option>
+                        <option value="INICIO" {% if show[9] == "INICIO" %}selected{% endif %}>Início</option>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <button type="submit">Salvar Alterações</button>
+        </form>
+
+        <br>
+        <a href="/">← Voltar</a>
+    </div>
+
+    <div class="footer-brand">
+        Sheet Control
+    </div>
+
+</div>
+</body>
+</html>

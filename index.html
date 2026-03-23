@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sheet Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff 0%, #f6fbf7 100%);
+            margin: 0;
+            padding: 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url("/static/sheet_control_logo.png") center center no-repeat;
+            background-size: 420px;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(4px);
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .topbar img {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 6px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            color: #14478f;
+        }
+
+        .topbar p {
+            margin: 4px 0 0;
+            color: #5f6f85;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.92);
+            padding: 20px;
+            border-radius: 14px;
+            flex: 1;
+            min-width: 220px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #2563eb;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 8px 0 0;
+            color: #111827;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.94);
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .linha-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            min-width: 180px;
+            background: white;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #eef3fb;
+            color: #14478f;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-brand {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            body::before {
+                opacity: 0.06;
+                background-size: 500px;
+                position: fixed;
+            }
+
+            .topbar {
+                box-shadow: none;
+                border: 1px solid #ddd;
+               <div style="margin-left:auto;">
+               <a href="/logout" style="background:#dc2626; color:white; padding:10px 14px; border-radius:8px; text-decoration:none;">
+             Sair
+             </a>
+            </div>
+            }
+
+            button, a {
+                display: none;
+            }
+
+            .box, .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                background: white;
+            }
+
+            .footer-brand::after {
+                content: " | Relatório gerado por Sheet Control";
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="topbar">
+        <img src="{{ url_for('static', filename='sheet_control_logo.png') }}" alt="Sheet Control">
+        <div>
+            <h1>Sheet Control</h1>
+            <p>Controle financeiro de shows</p>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total de Shows</h3>
+            <p>{{ total_shows }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Recebido</h3>
+            <p>R$ {{ total_recebido }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total a Receber</h3>
+            <p>R$ {{ total_a_receber }}</p>
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>Cadastrar Show</h2>
+
+        <form method="post" action="/add">
+            <div class="linha-form">
+                <div class="campo">
+                    <label>Artista</label>
+                    <input name="artista" required>
+                </div>
+
+                <div class="campo">
+                    <label>Cidade</label>
+                    <input name="cidade" required>
+                </div>
+
+                <div class="campo">
+                    <label>Data do Show</label>
+                    <input type="date" name="data_show" required>
+                </div>
+
+                <div class="campo">
+                    <label>Valor Total</label>
+                    <input name="valor_total" placeholder="590.000,00" required>
+                </div>
+            </div>
+
+            <div class="linha-form">
+                <div class="campo">
+                    <label>ISS (%)</label>
+                    <input name="iss_pct" placeholder="5">
+                </div>
+
+                <div class="campo">
+                    <label>IR (%)</label>
+                    <input name="ir_pct" placeholder="4,8">
+                </div>
+
+                <div class="campo">
+                    <label>Qtd Parcelas</label>
+                    <input type="number" name="num_parcelas" min="1" value="2" required>
+                </div>
+
+                <div class="campo">
+                    <label>1º Vencimento</label>
+                    <input type="date" name="primeiro_vencimento" required>
+                </div>
+
+                <div class="campo">
+                    <label>Tributo no</label>
+                    <select name="tributo_momento">
+                        <option value="FINAL">Final</option>
+                        <option value="INICIO">Início</option>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h2>Shows</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Artista</th>
+                    <th>Cidade</th>
+                    <th>Data do Show</th>
+                    <th>Valor Total</th>
+                    <th>ISS</th>
+                    <th>IR</th>
+                    <th>Parcelas</th>
+                    <th>1º Vencimento</th>
+                    <th>Tributo</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for show in shows %}
+                <tr>
+                    <td>{{ show[1] }}</td>
+                    <td>{{ show[2] }}</td>
+                    <td>{{ format_date_br(show[3]) }}</td>
+                    <td>R$ {{ format_brl(show[4]) }}</td>
+                    <td>{{ show[5] }}%</td>
+                    <td>{{ show[6] }}%</td>
+                    <td>{{ show[7] }}</td>
+                    <td>{{ format_date_br(show[8]) }}</td>
+                    <td>{{ show[9] }}</td>
+                    <td>
+                        <a href="/parcelas/{{ show[0] }}">Ver parcelas</a> |
+                        <a href="/editar_show/{{ show[0] }}">Editar</a>
+
+                        <form method="post" action="/excluir_show/{{ show[0] }}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este lançamento?');">
+                        <button type="submit" style="background:#dc2626; padding:6px 10px; margin-left:4px;">
+                         Excluir
+                        </button>
+                    <form>
+                 </td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-brand">
+        Sheet Control
+    </div>
+
+</div>
+</body>
+</html>
